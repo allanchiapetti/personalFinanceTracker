@@ -1,0 +1,29 @@
+FROM python:3.13-slim-bookworm
+
+WORKDIR /
+
+# System dependencies
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends build-essential \
+    curl \
+    apt-utils \
+    gnupg2 &&\
+    rm -rf /var/lib/apt/lists/* && \
+    pip install --upgrade pip
+
+# Install Microsoft ODBC Driver for SQL Server
+RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
+RUN curl https://packages.microsoft.com/config/debian/11/prod.list > /etc/apt/sources.list.d/mssql-release.list
+        
+RUN apt-get update
+RUN env ACCEPT_EULA=Y apt-get install -y msodbcsql18
+
+# Install Python dependencies
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+
+COPY . .
+
+EXPOSE 5000
+
+CMD ["gunicorn", "main:app", "-b", "0.0.0.0:5000"]
