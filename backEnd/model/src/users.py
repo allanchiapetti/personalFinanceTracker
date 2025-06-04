@@ -7,7 +7,6 @@ class User:
     def __init__(self):
         self.__conn = Connection()
 
-
     def get_user_data(self, email):
         """
         Get the user_id for a given email.
@@ -39,7 +38,6 @@ class User:
         # Close the session after the operation
         finally:
             self.__conn.close_session(session)
-    
     
     def create_user(self, first_name, last_name, email, password_hash, password_salt):
         """
@@ -80,7 +78,6 @@ class User:
         finally:
             self.__conn.close_session(session)
     
-
     def update_user(self, user_id, first_name=None, last_name=None, email=None, password_hash=None, password_salt=None):
         """
         Update an existing user's details.
@@ -124,7 +121,6 @@ class User:
         finally:
             self.__conn.close_session(session)
     
-
     def delete_user(self, user_id):
         """
         Delete a user by user_id.
@@ -154,7 +150,6 @@ class User:
         finally:
             self.__conn.close_session(session)
     
-
     def validate_password(self, user_id, password_hash):
         """
         Validate the user's password.

@@ -1,9 +1,11 @@
 from flask import Flask, Response, request, make_response, jsonify
 from src.users import User
+from src.accounts import Accounts
 import json
 
 app = Flask(__name__)
 user_obj = User()
+accounts_obj = Accounts()
 
 # User API Endpoints
 @app.route("/user", methods=["GET", "POST", "PUT", "DELETE"])
@@ -33,7 +35,6 @@ def user():
         response.headers["Content-Type"] = "application/json"
         return response
     
-    
     elif request.method == "POST":
         """
         Create a new user with the provided details.
@@ -53,18 +54,17 @@ def user():
                 
         # Call the method to create a new user
         create_user_response, status_code = user_obj.create_user(
-            data["first_name"],
-            data["last_name"],
-            data["email"],
-            data["password_hash"],
-            data["password_salt"]
+            data.get("first_name"),
+            data.get("last_name"),
+            data.get("email"),
+            data.get("password_hash"),
+            data.get("password_salt")
         )
 
         # Return the response
         response = make_response(jsonify(create_user_response), status_code)
         response.headers["Content-Type"] = "application/json"
         return response
-    
 
     elif request.method == "PUT":
         """
@@ -92,7 +92,6 @@ def user():
         response.headers["Content-Type"] = "application/json"
         return response
     
-
     elif request.method == "DELETE":
         """
         Delete a user based on user_id.
@@ -101,7 +100,9 @@ def user():
         data = request.get_json()
 
         if not data or "user_id" not in data:
-            return Response(json.dumps({"error": "User ID is required"}), status=400, mimetype="application/json")
+            response = make_response({"error": "Missing required fields"}, 400)
+            response.headers["Content-Type"] = "application/json"
+            return response
         
         delete_user_response, status_code = user_obj.delete_user(data["user_id"])
 
@@ -136,3 +137,104 @@ def validate_password():
     response = make_response(jsonify({"is_valid": is_valid}), status_code)
     response.headers["Content-Type"] = "application/json"
     return response
+
+# Accounts API Endpoints
+@app.route("/user/accounts", methods=["GET", "POST", "PUT", "DELETE"])
+def user_accounts():
+    if request.method == "GET":
+        """
+        Get all accounts for a given user_id.
+        If the user has no accounts, return an empty list.
+        """
+        # Get JSON data from the request
+        data = request.get_json()
+
+        if not data or "user_id" not in data:
+            response = make_response({"error": "Missing required fields"}, 400)
+            response.headers["Content-Type"] = "application/json"
+            return response
+
+        user_id = data.get("user_id")
+        
+        # Call the method to get user accounts
+        accounts_response, status_code = accounts_obj.get_user_accounts(user_id)
+
+        # Return the response
+        response = make_response(jsonify(accounts_response), status_code)
+        response.headers["Content-Type"] = "application/json"
+        return response
+    
+    elif request.method == "POST":
+        """
+        Create a new account for a given user_id with the provided details.
+        If any required field is missing, return an error message.
+        """
+        # Get JSON data from the request
+        data = request.get_json()
+
+        # List the required fields for account creation
+        required_fields = ["user_id", "institution", "account_name", "account_type", "balance"]
+        
+        # Check if all required fields are present in the JSON data
+        if not all(field in data for field in required_fields):
+            response = make_response({"error": "Missing required fields"}, 400)
+            response.headers["Content-Type"] = "application/json"
+            return response
+
+        # Call the method to create a new account
+        create_account_response, status_code = accounts_obj.create_account(
+            user_id=data.get("user_id"),
+            institution=data.get("institution"),
+            account_name=data.get("account_name"),
+            account_type=data.get("account_type"),
+            balance=data.get("balance")
+        )
+
+        # Return the response
+        response = make_response(jsonify(create_account_response), status_code)
+        response.headers["Content-Type"] = "application/json"
+        return response
+    
+    elif request.method == "PUT":
+        """
+        Update an existing account for a given user_id with the provided details.
+        If any required field is missing, return an error message.
+        """
+        # Get JSON data from the request
+        data = request.get_json()
+
+        if not data or "account_id" not in data:
+            response = make_response({"error": "Missing required fields"}, 400)
+            response.headers["Content-Type"] = "application/json"
+            return response
+
+        # Call the method to update an account
+        update_account_response, status_code = accounts_obj.update_account(
+            account_id=data.get("account_id"),
+            institution=data.get("institution"),
+            account_name=data.get("account_name"),
+            account_type=data.get("account_type"),
+            balance=data.get("balance")
+        )
+
+        # Return the response
+        response = make_response(jsonify(update_account_response), status_code)
+        response.headers["Content-Type"] = "application/json"
+        return response
+    
+    elif request.method == "DELETE":
+        """
+        Delete an account based on account_id.
+        """
+        # Get JSON data from the request
+        data = request.get_json()
+
+        if not data or "account_id" not in data:
+            return Response(json.dumps({"error": "Account ID is required"}), status=400, mimetype="application/json")
+        
+        delete_account_response, status_code = accounts_obj.delete_account(data.get("account_id"))
+
+        # Return the response
+        response = make_response(jsonify(delete_account_response), status_code)
+        response.headers["Content-Type"] = "application/json"
+        return response
