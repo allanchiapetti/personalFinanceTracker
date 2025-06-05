@@ -1,9 +1,9 @@
-from src.azure_orm import AccountTable, UserTable
+from src.azure_orm import AccountTable
 from src.connection import Connection
 
 import sqlalchemy as sa
 
-class Accounts:
+class Account:
     def __init__(self):
         self.__conn = Connection()
     

@@ -1,11 +1,15 @@
 from flask import Flask, Response, request, make_response, jsonify
 from src.users import User
-from src.accounts import Accounts
+from src.accounts import Account
+from src.transactions import Transaction
 import json
+
+from datetime import datetime
 
 app = Flask(__name__)
 user_obj = User()
-accounts_obj = Accounts()
+accounts_obj = Account()
+transaction_obj = Transaction()
 
 # User API Endpoints
 @app.route("/user", methods=["GET", "POST", "PUT", "DELETE"])
@@ -139,7 +143,7 @@ def validate_password():
     return response
 
 # Accounts API Endpoints
-@app.route("/user/accounts", methods=["GET", "POST", "PUT", "DELETE"])
+@app.route("/user/account", methods=["GET", "POST", "PUT", "DELETE"])
 def user_accounts():
     if request.method == "GET":
         """
@@ -236,5 +240,160 @@ def user_accounts():
 
         # Return the response
         response = make_response(jsonify(delete_account_response), status_code)
+        response.headers["Content-Type"] = "application/json"
+        return response
+
+# Transactions API Endpoints
+@app.route("/user/transaction", methods=["GET"])
+def user_transaction():
+    """
+    Get all transactions for a given user_id.
+    If the user has no transactions, return an empty list.
+    """
+    # Get JSON data from the request
+    data = request.get_json()
+
+    if not data or "user_id" not in data:
+        response = make_response({"error": "Missing required fields"}, 400)
+        response.headers["Content-Type"] = "application/json"
+        return response
+
+    user_id = data.get("user_id")
+    
+    # Call the method to get user transactions
+    transactions_response, status_code = transaction_obj.get_user_transactions(user_id)
+
+    # Return the response
+    response = make_response(jsonify(transactions_response), status_code)
+    response.headers["Content-Type"] = "application/json"
+    return response
+
+@app.route("/user/transaction/unpaid", methods=["GET"])
+def user_transaction_unpaid():
+    """
+    Get all unpaid transactions for a given user_id.
+    If the user has no unpaid transactions, return an empty list.
+    """
+    # Get JSON data from the request
+    data = request.get_json()
+
+    if not data or "user_id" not in data:
+        response = make_response({"error": "Missing required fields"}, 400)
+        response.headers["Content-Type"] = "application/json"
+        return response
+
+    user_id = data.get("user_id")
+    
+    # Call the method to get user unpaid transactions
+    unpaid_transactions_response, status_code = transaction_obj.get_user_unpaid_transactions(user_id)
+
+    # Return the response
+    response = make_response(jsonify(unpaid_transactions_response), status_code)
+    response.headers["Content-Type"] = "application/json"
+    return response
+
+@app.route("/user/account/transaction", methods=["GET", "POST", "PUT", "DELETE"])
+def user_account_transaction():
+    if request.method == "GET":
+        """
+        Get all transactions for a given account_id.
+        If the account has no transactions, return an empty list.
+        """
+        # Get JSON data from the request
+        data = request.get_json()
+
+        if not data or "account_id" not in data:
+            response = make_response({"error": "Missing required fields"}, 400)
+            response.headers["Content-Type"] = "application/json"
+            return response
+
+        account_id = data.get("account_id")
+        
+        # Call the method to get account transactions
+        transactions_response, status_code = transaction_obj.get_account_transactions(account_id)
+
+        # Return the response
+        response = make_response(jsonify(transactions_response), status_code)
+        response.headers["Content-Type"] = "application/json"
+        return response
+    
+    elif request.method == "POST":
+        """
+        Create a new transaction for a given account_id with the provided details.
+        If any required field is missing, return an error message.
+        """
+        # Get JSON data from the request
+        data = request.get_json()
+
+        # List the required fields for transaction creation
+        required_fields = ["account_id", "category", "amount", "transaction_type", "transaction_date"]
+        
+        # Check if all required fields are present in the JSON data
+        if not all(field in data for field in required_fields):
+            response = make_response({"error": "Missing required fields"}, 400)
+            response.headers["Content-Type"] = "application/json"
+            return response
+
+        # Call the method to create a new transaction
+        create_transaction_response, status_code = transaction_obj.create_transaction(
+            account_id=data.get("account_id"),
+            category=data.get("category"),
+            amount=data.get("amount"),
+            transaction_type=data.get("transaction_type"),
+            transaction_date=datetime.strptime(data.get("transaction_date"), "%Y-%m-%dT%H:%M:%S"),
+            paid=data.get("paid"),
+            description=data.get("description")
+        )
+
+        # Return the response
+        response = make_response(jsonify(create_transaction_response), status_code)
+        response.headers["Content-Type"] = "application/json"
+        return response
+    
+    elif request.method == "PUT":
+        """
+        Update an existing transaction for a given account_id with the provided details.
+        If any required field is missing, return an error message.
+        """
+        # Get JSON data from the request
+        data = request.get_json()
+
+        if not data or "transaction_id" not in data:
+            response = make_response({"error": "Missing required fields"}, 400)
+            response.headers["Content-Type"] = "application/json"
+            return response
+
+        # Call the method to update a transaction
+        update_transaction_response, status_code = transaction_obj.update_transaction(
+            transaction_id=data.get("transaction_id"),
+            category=data.get("category"),
+            amount=data.get("amount"),
+            transaction_type=data.get("transaction_type"),
+            transaction_date=datetime.strptime(data.get("transaction_date"), "%Y-%m-%dT%H:%M:%S"),
+            paid=data.get("paid"),
+            description=data.get("description")
+        )
+
+        # Return the response
+        response = make_response(jsonify(update_transaction_response), status_code)
+        response.headers["Content-Type"] = "application/json"
+        return response
+    
+    elif request.method == "DELETE":
+        """
+        Delete a transaction based on transaction_id.
+        """
+        # Get JSON data from the request
+        data = request.get_json()
+
+        if not data or "transaction_id" not in data:
+            response = make_response({"error": "Missing required fields"}, 400)
+            response.headers["Content-Type"] = "application/json"
+            return response
+        
+        delete_transaction_response, status_code = transaction_obj.delete_transaction(data.get("transaction_id"))
+
+        # Return the response
+        response = make_response(jsonify(delete_transaction_response), status_code)
         response.headers["Content-Type"] = "application/json"
         return response
