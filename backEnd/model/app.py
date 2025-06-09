@@ -116,7 +116,7 @@ def user():
         return response
 
 # Validate User Password API Endpoint
-@app.route("/user/validate_password", methods=["GET"])
+@app.route("/user/validate_password", methods=["POST"])
 def validate_password():
     """
     Validate the password for a given user.

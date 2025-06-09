@@ -12,7 +12,7 @@ class UserTable(base):
     EMAIL = sa.Column(sa.VARCHAR(255), nullable=False, unique=True)
     CREATED_AT = sa.Column(sa.DATETIME, nullable=False, server_default=sa.func.now())
     UPDATED_AT = sa.Column(sa.DATETIME, nullable=True, onupdate=sa.func.now())
-    PASSWORD_HASH = sa.Column(sa.VARCHAR(255), nullable=False)
+    PASSWORD_HASH = sa.Column(sa.VARCHAR(64), nullable=False)
     PASSWORD_SALT = sa.Column(sa.VARCHAR(255), nullable=False)
 
     # Define the relationship to the AccountTable

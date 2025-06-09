@@ -10,7 +10,7 @@
 
 <h2>/user/validate_password</h2>
     <ul>
-        <li>GET</li>
+        <li>POST</li>
     </ul>
 
 <h2>/user/account</h2>

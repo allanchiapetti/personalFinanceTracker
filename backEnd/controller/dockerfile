@@ -1,0 +1,16 @@
+FROM python:3.13-slim-bookworm
+
+WORKDIR /
+
+# System dependencies
+RUN pip install --upgrade pip
+
+# Install Python dependencies
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+
+COPY . .
+
+EXPOSE 5050
+
+CMD ["gunicorn", "main:app", "-b", "0.0.0.0:5050"]
