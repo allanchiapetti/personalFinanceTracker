@@ -1,6 +1,7 @@
 "use client";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import { useState } from "react";
+import { useRouter } from 'next/navigation';
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -10,6 +11,15 @@ export default function LoginPage() {
     e.preventDefault();
     await signIn("credentials", { email, password, redirect: true, callbackUrl: "/welcome" });
   };
+  
+  // Check if the user is already logged in
+  const { data: session } = useSession();
+  
+  // If session exists, redirect to welcome page
+  if (session) {
+    const router = useRouter();
+    router.push('/welcome'); 
+  }
 
   return (
     <div>
