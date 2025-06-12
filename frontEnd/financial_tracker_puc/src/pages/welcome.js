@@ -10,7 +10,8 @@ export default function Profile() {
 
   return (
     <div>
-      <h1>Welcome, {session.user.name}!</h1>
+      <h1>Test, {session.user.name}!</h1>
+      <h2>Test, {session.user.id}!</h2>
       <button onClick={() => signOut()}>Sign Out</button>
     </div>
   );
