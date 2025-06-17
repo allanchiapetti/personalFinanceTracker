@@ -1,15 +1,19 @@
 "use client";
 import { signIn, useSession } from "next-auth/react";
 import { useState } from "react";
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';    
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await signIn("credentials", { email, password, redirect: true, callbackUrl: "/welcome" });
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+    await signIn("credentials", { email, password, redirect: false });
+    // After successful sign-in, redirect to welcome page
+    router.push(`${baseUrl}/welcome`);
   };
   
   // Check if the user is already logged in
@@ -17,8 +21,10 @@ export default function LoginPage() {
   
   // If session exists, redirect to welcome page
   if (session) {
-    const router = useRouter();
-    router.push('/welcome'); 
+
+     // Redirect to welcome page
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+    router.push(`${baseUrl}/welcome`);
   }
 
   return (

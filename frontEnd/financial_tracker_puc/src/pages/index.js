@@ -14,7 +14,8 @@ export default function IndexPage() {
   // If session exists, redirect to welcome page
   useEffect(() => {
     if (session) {
-      router.push('/welcome'); 
+      const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+      router.push(`${baseUrl}/welcome`);
     }
   }, [session, router]);
   return (
