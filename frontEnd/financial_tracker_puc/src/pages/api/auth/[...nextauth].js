@@ -35,7 +35,6 @@ export default NextAuth({
                                                                                                      timeout: 5000,
                                                                                                      httpsAgent: new https.Agent({ rejectUnauthorized: false })});
 
-          
         const user = response.data;
         const jwt_token = response.headers["set-cookie"]//[0].split(';')[0].split('=')[1]; // Extract the JWT token from the response headers
         user.jwt_token = jwt_token; // Add the JWT token to the user object        

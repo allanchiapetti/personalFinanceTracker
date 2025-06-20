@@ -1,0 +1,14 @@
+import os
+import requests
+
+MODEL_API_ENDPOINT = os.getenv("MODEL_API_ENDPOINT")
+
+def get_pending_transactions(user_id):
+    # Call the user data endpoint from Model to retrieve the user pending transactions
+    pending_transactions = requests.get(url=f"{MODEL_API_ENDPOINT}/user/transaction/unpaid", json={"user_id": user_id})
+
+    # Check if the request was successful
+    if pending_transactions.status_code != 200:
+        return None
+    else:
+        return pending_transactions.json()

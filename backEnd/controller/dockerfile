@@ -13,4 +13,4 @@ COPY . .
 
 EXPOSE 444
 
-CMD ["gunicorn", "main:app", "-b", "0.0.0.0:444", "--certfile", "/certs/localhost.com+4.pem", "--keyfile", "/certs/localhost.com+4-key.pem"]
+CMD ["gunicorn", "main:app", "-b", "0.0.0.0:444", "--certfile", "/certs/localhost+1.pem", "--keyfile", "/certs/localhost+1-key.pem"]

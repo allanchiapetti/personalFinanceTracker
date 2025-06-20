@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "set NODE_EXTRA_CA_CERTS=C:\\Users\\allan\\Coding\\personalFinanceTracker\\backEnd\\controller\\certs\\rootCA.pem && next dev --turbopack",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"

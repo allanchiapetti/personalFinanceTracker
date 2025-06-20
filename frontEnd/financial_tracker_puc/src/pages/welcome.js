@@ -4,11 +4,9 @@ import React from "react";
 import Link from "next/link";
 
 export default function WelcomePage() {
-  const { data: session } = useSession();
-  document.cookie =  session.user.jwt
-
-
   // If session does not exist, create a login link
+  const { data: session } = useSession();
+  
   if (!session) {
     return    (
       <div className="flex justify-center items-center h-screen">
@@ -20,7 +18,11 @@ export default function WelcomePage() {
     </div>
   );
 }
+  
   else {
+  
+  document.cookie =  session.user.jwt
+  
   return (
     <div>
       <h1>Hello {session.user.first_name}</h1>

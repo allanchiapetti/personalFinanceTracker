@@ -1,10 +1,11 @@
 import os
 from flask import Flask, Response, request, make_response, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity, create_access_token, JWTManager, set_access_cookies
-from flask_cors import CORS
-import ssl
+from flask_cors import CORS, cross_origin
 
 from src.auth_user import auth_user
+from src.token import Token
+from src.transactions import get_pending_transactions
 
 app = Flask(__name__)
 
@@ -16,16 +17,16 @@ app.config["JWT_TOKEN_LOCATION"] = ["cookies"]
 #app.config["JWT_COOKIE_SAMESITE"] = "None"
 #app.config["JWT_COOKIE_CSRF_PROTECT"] = True
 #app.config["JWT_ACCESS_COOKIE_PATH"] = "/api/"
-app.config["JWT_REFRESH_COOKIE_PATH"] = "/token/refresh"
+#app.config["JWT_REFRESH_COOKIE_PATH"] = "/token/refresh"
 
 jwt = JWTManager(app)
 
-CORS(app, supports_credentials=True)
+CORS(app, supports_credentials=True, origins=["https://localhost", "http://10.5.0.2:3000"])
 
 @app.after_request
 def add_cors_headers(response):
     response.headers['Access-Control-Allow-Credentials'] = 'true'
-    response.headers['Access-Control-Allow-Origin'] = 'https://localhost.com'  # Adjust as needed
+    response.headers['Access-Control-Allow-Origin'] = 'https://localhost'  # Adjust as needed
     return response
 
 
@@ -49,26 +50,26 @@ def auth():
     # If authentication is successful, return user data
     else:
         response = make_response(jsonify(user_data), 200)
-        access_token = create_access_token(identity=str(user_data["user_id"]))
-        response.set_cookie("jwt", access_token, httponly=False, secure=True,  samesite="None")
+        access_token = Token().create_token(user_id=user_data["user_id"])
+        
+        response.set_cookie("jwt", access_token, httponly=False, secure=True, samesite="None", path="/")
 
     return response
 
-
-@app.route("/test", methods=["GET"])
-def test():
+#@cross_origin(supports_credentials=True, origins=["https://localhost" , "http://10.5.0.2:3000"])
+@app.route("/transactions/pending", methods=["GET"])
+def transactions_pending():
     """
     Test endpoint to verify the server is running.
     """
     token = request.cookies.get("jwt")
-    if not token:
-        return Response("No token", status=401, mimetype="text/plain")
+    user_id = request.args.get("user_id") 
+
+    user_id = Token().validate_token(token)
+    if user_id:
+        response = make_response(jsonify(get_pending_transactions(str(user_id))), 200)
+        response.headers["Content-Type"] = "application/json"
+
+        return response
     else:
-        try:
-            jwt.decode_token(token)
-        except Exception as e:
-            return Response("Unauthorized", status=401, mimetype="text/plain")
-    
-    return Response("Server is running", status=200, mimetype="text/plain")
-
-
+        return Response("Unauthorized", status=401, mimetype="text/plain")

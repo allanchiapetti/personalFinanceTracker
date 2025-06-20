@@ -48,13 +48,24 @@ class Transaction:
         
         try:
             # Query the database for accounts associated with the user_id
-            user_transactions = (session.query(TransactionTable)
-                                 .join(AccountTable, AccountTable.ACCOUNT_ID == TransactionTable.ACCOUNT_ID)
-                                 .join(UserTable, UserTable.USER_ID == AccountTable.USER_ID)
-                                 .filter(UserTable.USER_ID == user_id)
-                                 .all())
+            user_transactions = session.query(TransactionTable)\
+            .join(AccountTable, AccountTable.ACCOUNT_ID == TransactionTable.ACCOUNT_ID)\
+            .join(UserTable, UserTable.USER_ID == AccountTable.USER_ID)\
+            .filter(UserTable.USER_ID == user_id)\
+            .all()
 
-            return user_transactions, 200
+            # If transactions are found, return the transaction details
+            if user_transactions:
+                return [{"transaction_id": transaction.TRANSACTION_ID,
+                         "category": transaction.CATEGORY,
+                         "amount": str(transaction.AMOUNT),
+                         "transaction_type": transaction.TRANSACTION_TYPE,
+                         "transaction_date": transaction.TRANSACTION_DATE.isoformat(),
+                         "description": transaction.DESCRIPTION} for transaction in user_transactions], 200      
+            
+            # If no transactions are found, return an empty list
+            else:
+                return [], 200     
             
         # If any exception occurs, return an error message 
         except Exception as e:
@@ -73,13 +84,24 @@ class Transaction:
             
             try:
                 # Query the database for accounts associated with the user_id
-                user_transactions = (session.query(TransactionTable)
-                                    .join(AccountTable, AccountTable.ACCOUNT_ID == TransactionTable.ACCOUNT_ID)
-                                    .join(UserTable, UserTable.USER_ID == AccountTable.USER_ID)
-                                    .filter(UserTable.USER_ID == user_id).where(TransactionTable.PAID == 'N')
-                                    .all())
+                user_transactions = session.query(TransactionTable)\
+                                    .join(AccountTable, AccountTable.ACCOUNT_ID == TransactionTable.ACCOUNT_ID)\
+                                    .join(UserTable, UserTable.USER_ID == AccountTable.USER_ID)\
+                                    .filter(UserTable.USER_ID == user_id).where(TransactionTable.PAID == 'N')\
+                                    .all()
 
-                return user_transactions, 200
+                # If transactions are found, return the transaction details
+                if user_transactions:
+                    return [{"transaction_id": transaction.TRANSACTION_ID,
+                            "category": transaction.CATEGORY,
+                            "amount": str(transaction.AMOUNT),
+                            "transaction_type": transaction.TRANSACTION_TYPE,
+                            "transaction_date": transaction.TRANSACTION_DATE.isoformat(),
+                            "description": transaction.DESCRIPTION} for transaction in user_transactions], 200      
+                
+                # If no transactions are found, return an empty list
+                else:
+                    return [], 200     
                 
             # If any exception occurs, return an error message 
             except Exception as e:
