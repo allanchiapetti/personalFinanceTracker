@@ -5,7 +5,7 @@ from flask_cors import CORS, cross_origin
 
 from src.auth_user import auth_user
 from src.token import Token
-from src.transactions import get_pending_transactions
+from src.transactions import get_pending_transactions, update_transaction
 
 app = Flask(__name__)
 
@@ -60,10 +60,8 @@ def auth():
 @app.route("/transactions/pending", methods=["GET"])
 def transactions_pending():
     """
-    Test endpoint to verify the server is running.
     """
     token = request.cookies.get("jwt")
-    user_id = request.args.get("user_id") 
 
     user_id = Token().validate_token(token)
     if user_id:
@@ -71,5 +69,24 @@ def transactions_pending():
         response.headers["Content-Type"] = "application/json"
 
         return response
+    else:
+        return Response("Unauthorized", status=401, mimetype="text/plain")
+
+@app.route("/transactions", methods=["PUT"])
+def transactions():
+    """
+    """
+    token = request.cookies.get("jwt")
+
+    user_id = Token().validate_token(token)
+    if user_id:
+
+        if request.method == "PUT":
+            update = update_transaction(request.get_json())
+            
+            if update:
+                return Response(status=200)  
+            
+            return Response(status=500)
     else:
         return Response("Unauthorized", status=401, mimetype="text/plain")

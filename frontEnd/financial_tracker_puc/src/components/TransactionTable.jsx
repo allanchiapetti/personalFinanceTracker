@@ -1,15 +1,10 @@
 import React, { useState } from 'react';
 
-export default function TransactionTable({ data }) {
-  const [selectedId, setSelectedId] = useState(null);
-
-const handleRowClick = (id) => {
-  setSelectedId(prevId => (prevId === id ? null : id));
-};
+export default function TransactionTable({ data, onRowClick, selectedId }) {
 
   return (
     <div className="flex justify-left">
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto rounded-md border border-gray-300 shadow-sm">
         <table className="min-w-full divide-y divide-gray-200 border border-gray-300 shadow-sm">
           <thead className="bg-gray-50">
             <tr>
@@ -22,13 +17,12 @@ const handleRowClick = (id) => {
           </thead>
           <tbody className="divide-y divide-gray-200 bg-white">
             {data.map((item) => (
-              <tr
-                key={item.transaction_id}
-                onClick={() => handleRowClick(item.transaction_id)}
-                className={`hover:bg-gray-100 cursor-pointer ${
-                  selectedId === item.transaction_id ? 'bg-blue-100' : ''
-                }`}
-              >
+                <tr
+                  onClick={() => onRowClick(item.transaction_id)}
+                  className={`hover:bg-gray-100 cursor-pointer ${
+                    selectedId === item.transaction_id ? 'bg-blue-100' : ''
+                  }`}
+                >
                 <td className="px-2 py-2 text-xs text-gray-700 w-32 truncate">
                   {new Date(item.transaction_date).toLocaleString()}
                 </td>

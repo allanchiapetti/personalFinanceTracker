@@ -12,3 +12,9 @@ def get_pending_transactions(user_id):
         return None
     else:
         return pending_transactions.json()
+
+
+def update_transaction(update_json):
+    update = requests.put(url=f"{MODEL_API_ENDPOINT}/user/account/transaction", json=update_json)
+
+    return update.status_code == 200

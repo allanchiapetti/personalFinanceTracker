@@ -2,7 +2,6 @@ import https from 'https';
 
 export default async function handler(req, res) {
   const cookie = req.headers.cookie;
-  console.log(cookie);
 
   const agent = new https.Agent({ rejectUnauthorized: false });
 
@@ -16,6 +15,5 @@ export default async function handler(req, res) {
   });
 
   const data = await response.json();
-  console.log("Response:", data);
   res.status(200).json(data);
 }
