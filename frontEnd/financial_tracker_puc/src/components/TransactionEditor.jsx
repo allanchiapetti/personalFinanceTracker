@@ -13,6 +13,18 @@ export default function TransactionEditor({ transaction, onClose, refreshData}) 
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
+  const handleBlur = () => {
+    setForm((prev) => ({
+        ...prev,
+        amount: Number(prev.amount).toFixed(2),
+    }));
+    
+    setForm((prev) => ({
+        ...prev,
+        balance: prev.balance < prev.amount ? Number(prev.balance).toFixed(2) : Number(prev.amount).toFixed(2),
+    }));
+    };
+
 const handleSubmit = async (e) => {
   e.preventDefault();
   try {
@@ -27,7 +39,7 @@ const handleSubmit = async (e) => {
     setTimeout(() => {
       refreshData(); // Refresh table
       onClose();     // Close editor after fade
-    }, 300); // ⏱
+    }, 300); // 
   } catch (err) {
     console.error(err);
   }
@@ -49,8 +61,22 @@ const handleSubmit = async (e) => {
             name="amount"
             value={form.amount || ""}
             onChange={handleChange}
+            onBlur={handleBlur}
             placeholder="Amount"
             type="number"
+            step="0.01"
+            min="0"
+            className="border px-3 py-1 rounded"
+            />
+            <input
+            name="balance"
+            value={form.balance || ""}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            placeholder="Balance"
+            type="number"
+            step="0.01"
+            min="0"
             className="border px-3 py-1 rounded"
             />
             <input

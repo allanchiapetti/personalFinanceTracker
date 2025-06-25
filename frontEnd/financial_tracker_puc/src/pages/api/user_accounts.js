@@ -5,7 +5,7 @@ export default async function handler(req, res) {
 
   const agent = new https.Agent({ rejectUnauthorized: false });
 
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/transactions/pending`, {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/accounts`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -15,6 +15,6 @@ export default async function handler(req, res) {
   });
 
   const data = await response.json();
-  console.log(data);
+
   res.status(200).json(data);
 }

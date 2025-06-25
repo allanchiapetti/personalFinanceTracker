@@ -25,7 +25,8 @@ class Transaction:
                          "amount": str(transaction.AMOUNT),
                          "transaction_type": transaction.TRANSACTION_TYPE,
                          "transaction_date": transaction.TRANSACTION_DATE.isoformat(),
-                         "description": transaction.DESCRIPTION} for transaction in transactions], 200
+                         "description": transaction.DESCRIPTION,
+                         "balance": str(transaction.BALANCE)} for transaction in transactions], 200
             
             # If no transactions are found, return an empty list
             else:
@@ -61,7 +62,8 @@ class Transaction:
                          "amount": str(transaction.AMOUNT),
                          "transaction_type": transaction.TRANSACTION_TYPE,
                          "transaction_date": transaction.TRANSACTION_DATE.isoformat(),
-                         "description": transaction.DESCRIPTION} for transaction in user_transactions], 200      
+                         "description": transaction.DESCRIPTION,
+                         "balance": str(transaction.BALANCE)} for transaction in user_transactions], 200      
             
             # If no transactions are found, return an empty list
             else:
@@ -87,18 +89,20 @@ class Transaction:
                 user_transactions = session.query(TransactionTable)\
                                     .join(AccountTable, AccountTable.ACCOUNT_ID == TransactionTable.ACCOUNT_ID)\
                                     .join(UserTable, UserTable.USER_ID == AccountTable.USER_ID)\
-                                    .filter(UserTable.USER_ID == user_id).where(TransactionTable.PAID == 'N')\
-                                    .all()
+                                    .filter(UserTable.USER_ID == user_id).where(TransactionTable.BALANCE != 0)\
+                                    .order_by(TransactionTable.TRANSACTION_DATE.asc()).all()
 
                 # If transactions are found, return the transaction details
                 if user_transactions:
                     return [{"transaction_id": transaction.TRANSACTION_ID,
+                            "account": transaction.account.ACCOUNT_NAME,
                             "category": transaction.CATEGORY,
-                            "amount": str(transaction.AMOUNT),
+                            "amount": round(transaction.AMOUNT, 2),
                             "transaction_type": transaction.TRANSACTION_TYPE,
                             "transaction_date": transaction.TRANSACTION_DATE.isoformat(),
-                            "description": transaction.DESCRIPTION} for transaction in user_transactions], 200      
-                
+                            "description": transaction.DESCRIPTION,
+                            "balance": round(transaction.BALANCE, 2)} for transaction in user_transactions], 200
+
                 # If no transactions are found, return an empty list
                 else:
                     return [], 200     
@@ -111,7 +115,7 @@ class Transaction:
             finally:
                 self.__conn.close_session(session)
     
-    def create_transaction(self, account_id, category, amount, transaction_type, transaction_date, paid=None ,description=None):
+    def create_transaction(self, account_id, category, amount, transaction_type, transaction_date, balance=None, description=None):
         """
         Create a new transaction for a given account_id with the provided details.
         If any required field is missing, return an error message.
@@ -126,8 +130,8 @@ class Transaction:
                 AMOUNT=amount,
                 TRANSACTION_TYPE=transaction_type,
                 TRANSACTION_DATE=transaction_date,
-                PAID=paid,
-                DESCRIPTION=description
+                DESCRIPTION=description,
+                BALANCE=balance if balance is not None else amount  # Default balance to amount if not provided
             )
             
             # Create the transaction in the database
@@ -145,7 +149,7 @@ class Transaction:
         finally:
             self.__conn.close_session(session)
     
-    def update_transaction(self,  transaction_id, category=None, amount=None, transaction_type=None, transaction_date=None, paid=None, description=None):
+    def update_transaction(self,  transaction_id, category=None, amount=None, balance=None, transaction_type=None, transaction_date=None, description=None):
         """
         Update an existing transaction with the provided details.
         If the transaction does not exist, return an error message.
@@ -169,10 +173,10 @@ class Transaction:
                 transaction.TRANSACTION_TYPE = transaction_type
             if transaction_date is not None:
                 transaction.TRANSACTION_DATE = transaction_date
-            if paid is not None:
-                transaction.PAID = paid
             if description is not None:
                 transaction.DESCRIPTION = description
+            if balance is not None:
+                transaction.BALANCE = balance
             
             # Commit the changes to the database
             session.commit()

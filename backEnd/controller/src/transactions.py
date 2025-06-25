@@ -13,8 +13,16 @@ def get_pending_transactions(user_id):
     else:
         return pending_transactions.json()
 
-
 def update_transaction(update_json):
     update = requests.put(url=f"{MODEL_API_ENDPOINT}/user/account/transaction", json=update_json)
 
     return update.status_code == 200
+
+def create_transaction(create_json, user_id):
+    # Add the user_id to the create_json
+    create_json["user_id"] = user_id
+
+    # Call the user data endpoint from Model to create a new transaction
+    create = requests.post(url=f"{MODEL_API_ENDPOINT}/user/account/transaction", json=create_json)
+
+    return create.status_code == 200

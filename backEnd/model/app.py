@@ -340,9 +340,9 @@ def user_account_transaction():
             category=data.get("category"),
             amount=data.get("amount"),
             transaction_type=data.get("transaction_type"),
-            transaction_date=datetime.strptime(data.get("transaction_date"), "%Y-%m-%dT%H:%M:%S"),
-            paid=data.get("paid") if get("paid") in ["Y", "N"] else None,
-            description=data.get("description")
+            transaction_date=datetime.strptime(data.get("transaction_date"), "%Y-%m-%d"),
+            description=data.get("description"),
+            balance=data.get("balance")
         )
 
         # Return the response
@@ -370,8 +370,8 @@ def user_account_transaction():
             amount=data.get("amount"),
             transaction_type=data.get("transaction_type"),
             transaction_date=datetime.strptime(data.get("transaction_date"), "%Y-%m-%dT%H:%M:%S"),
-            paid=data.get("paid"),
-            description=data.get("description")
+            description=data.get("description"),
+            balance=data.get("balance")
         )
 
         # Return the response

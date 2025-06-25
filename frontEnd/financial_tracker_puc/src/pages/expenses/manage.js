@@ -2,10 +2,12 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import TransactionTable from "@/components/TransactionTable";
 import TransactionEditor from "@/components/TransactionEditor";
+import AddTransactionForm from "@/components/AddTransactionForm";
 
 export default function ExpenseManagement() {
   const [data, setData] = useState([]);
   const [selectedTransaction, setSelectedTransaction] = useState(null);
+  const [showAddTransaction, setShowAddTransaction] = useState(false);
 
   const fetchTransactions = async () => {
     try {
@@ -42,6 +44,20 @@ export default function ExpenseManagement() {
           refreshData={fetchTransactions}
         />
       )}
+
+      {showAddTransaction && (
+        <AddTransactionForm
+          onClose={() => setShowAddTransaction(false)}
+          refreshData={fetchTransactions}
+        />
+      )}
+      <button
+        onClick={() => setShowAddTransaction(true)}
+        className="bg-blue-500 text-white px-4 py-2 rounded shadow hover:bg-blue-600 transition"
+      >
+        Add Transaction
+      </button>
+      
     </div>
   );
 }

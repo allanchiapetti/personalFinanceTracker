@@ -9,8 +9,10 @@ export default function TransactionTable({ data, onRowClick, selectedId }) {
           <thead className="bg-gray-50">
             <tr>
               <th className="px-4 py-2 text-left text-sm font-semibold text-gray-700">Date</th>
+              <th className="px-4 py-2 text-left text-sm font-semibold text-gray-700">Account</th>
               <th className="px-4 py-2 text-left text-sm font-semibold text-gray-700">Description</th>
               <th className="px-4 py-2 text-left text-sm font-semibold text-gray-700">Amount ($)</th>
+              <th className="px-4 py-2 text-left text-sm font-semibold text-gray-700">Balance ($)</th>
               <th className="px-4 py-2 text-left text-sm font-semibold text-gray-700">Type</th>
               <th className="px-4 py-2 text-left text-sm font-semibold text-gray-700">Category</th>
             </tr>
@@ -24,11 +26,15 @@ export default function TransactionTable({ data, onRowClick, selectedId }) {
                   }`}
                 >
                 <td className="px-2 py-2 text-xs text-gray-700 w-32 truncate">
-                  {new Date(item.transaction_date).toLocaleString()}
+                  {new Date(item.transaction_date).toISOString().split("T")[0]}
                 </td>
+                <td className="px-4 py-2 text-sm text-gray-800 w-32 truncate">{item.account}</td>
                 <td className="px-4 py-2 text-sm text-gray-800 w-32 truncate">{item.description}</td>
                 <td className="px-4 py-2 text-sm text-gray-800 w-32 truncate">
                   {parseFloat(item.amount).toFixed(2)}
+                </td>
+                <td className="px-4 py-2 text-sm text-gray-800 w-32 truncate">
+                  {parseFloat(item.balance).toFixed(2)}
                 </td>
                 <td className="px-4 py-2 text-sm w-32">
                   <span
