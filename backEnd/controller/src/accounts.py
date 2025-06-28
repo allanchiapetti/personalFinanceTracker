@@ -12,3 +12,8 @@ def get_user_accounts(user_id):
         return None
     else:
         return user_accounts.json()
+    
+def update_account(update_json):
+    update = requests.put(url=f"{MODEL_API_ENDPOINT}/user/account", json=update_json)
+
+    return update.status_code == 200

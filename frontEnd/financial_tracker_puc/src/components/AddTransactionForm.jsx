@@ -15,21 +15,21 @@ export default function AddTransactionForm({ onClose, refreshData }) {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-    const [accounts, setAccounts] = useState([]);
+  const [accounts, setAccounts] = useState([]);
 
-    useEffect(() => {
-        const fetchAccounts = async () => {
-        try {
-            const res = await fetch("/api/user_accounts", { credentials: "include" }); // or axios if you're using that
-            const data = await res.json();
-            setAccounts(data);
-        } catch (err) {
-            console.error("Failed to fetch accounts:", err);
-        }
-        };
+  useEffect(() => {
+    const fetchAccounts = async () => {
+      try {
+        const res = await fetch("/api/user_accounts", { credentials: "include" }); // or axios if you're using that
+        const data = await res.json();
+        setAccounts(data);
+      } catch (err) {
+        console.error("Failed to fetch accounts:", err);
+      }
+    };
 
-        fetchAccounts();
-    }, []);
+    fetchAccounts();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -52,38 +52,38 @@ export default function AddTransactionForm({ onClose, refreshData }) {
 
   const handleBlur = () => {
     setForm((prev) => ({
-        ...prev,
-        amount: Number(prev.amount).toFixed(2),
+      ...prev,
+      amount: Number(prev.amount).toFixed(2),
     }));
-    };
+  };
 
 
   return (
     <div className="w-80 bg-white border border-gray-300 shadow-md p-4 rounded-md text-black">
       <h3 className="text-lg font-semibold mb-4">Add Transaction</h3>
       <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-                <input
+        <input
           name="transaction_date"
-            type="date"
-            value={form.transaction_date}
-            onChange={handleChange}
-            className="border px-3 py-1 rounded"
-            required
-        /> 
+          type="date"
+          value={form.transaction_date}
+          onChange={handleChange}
+          className="border px-3 py-1 rounded"
+          required
+        />
         <select
-            name="account_id"
-            value={form.account_id}
-            onChange={handleChange}
-            className="border px-3 py-1 rounded"
-            required
-            >
-            <option value="">Select Account</option>
-            {accounts.map((acct) => (
-                <option key={acct.account_id} value={acct.account_id}>
-                {acct.account_name} — {acct.account_type}
-                </option>
-            ))}
-        </select> 
+          name="account_id"
+          value={form.account_id}
+          onChange={handleChange}
+          className="border px-3 py-1 rounded"
+          required
+        >
+          <option value="">Select Account</option>
+          {accounts.map((acct) => (
+            <option key={acct.account_id} value={acct.account_id}>
+              {acct.account_name} — {acct.account_type}
+            </option>
+          ))}
+        </select>
         <input
           name="description"
           value={form.description}
@@ -122,7 +122,7 @@ export default function AddTransactionForm({ onClose, refreshData }) {
           <option value="Debit">Debit</option>
           <option value="Credit">Credit</option>
         </select>
-        <button type="submit" className="bg-green-600 text-white px-4 py-1 rounded hover:bg-green-700">
+        <button type="submit" className="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-700">
           Save
         </button>
         <button type="button" onClick={onClose} className="text-sm text-gray-500 mt-1">

@@ -45,11 +45,16 @@ const handleSubmit = async (e) => {
   }
 };
 
+const handleClearBalance = () => {
+  setForm((prev) => ({ ...prev, balance: "0.00" }));
+};
+
   return (
     <div className={`transition-opacity duration-300 ${fadingOut ? 'opacity-0' : 'opacity-100'}`}>
         <div className="w-80 bg-white border border-gray-300 shadow-md p-4 rounded">
         <h3 className="text-lg font-semibold mb-4 text-black">Edit Transaction</h3>
         <form onSubmit={handleSubmit} className="flex flex-col gap-3 text-black">
+            
             <input
             name="description"
             value={form.description || ""}
@@ -57,28 +62,38 @@ const handleSubmit = async (e) => {
             placeholder="Description"
             className="border px-3 py-1 rounded"
             />
-            <input
-            name="amount"
-            value={form.amount || ""}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            placeholder="Amount"
-            type="number"
-            step="0.01"
-            min="0"
-            className="border px-3 py-1 rounded"
-            />
-            <input
-            name="balance"
-            value={form.balance || ""}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            placeholder="Balance"
-            type="number"
-            step="0.01"
-            min="0"
-            className="border px-3 py-1 rounded"
-            />
+            
+            <div>
+              <input 
+              name="amount"
+              value={form.amount || ""}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              placeholder="Amount"
+              type="number"
+              step="0.01"
+              min="0"
+              className="border px-3 py-1 rounded"
+              />
+              <label> Amount</label>
+            </div>
+            
+            <div>
+              <input
+              name="balance"
+              value={form.balance || ""}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              placeholder="Balance"
+              type="number"
+              step="0.01"
+              min="0"
+              className="border px-3 py-1 rounded"
+              />
+              <label> Balance</label>
+            </div>
+            
+            
             <input
             name="category"
             value={form.category || ""}
@@ -86,6 +101,7 @@ const handleSubmit = async (e) => {
             placeholder="Category"
             className="border px-3 py-1 rounded"
             />
+
             <select
             name="transaction_type"
             value={form.transaction_type || ""}
@@ -95,12 +111,14 @@ const handleSubmit = async (e) => {
             <option value="Debit">Debit</option>
             <option value="Credit">Credit</option>
             </select>
+
             <button
             type="submit"
-            className="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600"
+            className="bg-green-600 text-white px-4 py-1 rounded hover:bg-green-700"
             >
             Save
             </button>
+
             <button
             type="button"
             onClick={onClose}
@@ -108,8 +126,20 @@ const handleSubmit = async (e) => {
             >
             Cancel
             </button>
+            
+            <div>
+             <button
+                type="button"
+                onClick={handleClearBalance}
+                className="relative text-sm bg-gray-800 text-white px-1.5 py-1 rounded hover:bg-green-600"
+              >
+                {form.transaction_type === "Debit" ? "Paid" : "Received"}
+            </button>
+            </div>
+
         </form>
         </div>
+        
     </div>
   );
 }

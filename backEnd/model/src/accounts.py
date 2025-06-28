@@ -1,4 +1,4 @@
-from src.azure_orm import AccountTable
+from src.azure_orm import AccountTable, TransactionTable
 from src.connection import Connection
 
 import sqlalchemy as sa
@@ -15,8 +15,38 @@ class Account:
         session = self.__conn.create_session()
         
         try:
-            # Query the database for accounts associated with the user_id
-            accounts = session.query(AccountTable).filter(AccountTable.USER_ID == user_id).all()
+            # Subquery: Sum of transactions per account_id
+            txn_sum_subq = (
+                session.query(
+                    TransactionTable.ACCOUNT_ID,
+                    sa.func.coalesce(sa.func.sum(TransactionTable.BALANCE), 0).label("txn_sum")
+                )
+                .group_by(TransactionTable.ACCOUNT_ID)
+            ).subquery()
+
+            # Main query: Join accounts with transaction sums
+            accounts = (
+                session.query(
+                    AccountTable.ACCOUNT_ID,
+                    AccountTable.ACCOUNT_NAME,
+                    AccountTable.ACCOUNT_TYPE,
+                    AccountTable.INSTITUTION,
+                    sa.case((AccountTable.ACCOUNT_TYPE == "Credit Card", txn_sum_subq.c.txn_sum),
+                                else_=AccountTable.BALANCE
+                            ).label("BALANCE")
+                )
+                .outerjoin(txn_sum_subq, AccountTable.ACCOUNT_ID == txn_sum_subq.c.ACCOUNT_ID)
+                .filter(AccountTable.USER_ID == user_id)
+                .order_by(
+                    sa.case(
+                        (AccountTable.ACCOUNT_TYPE == "Checking", 0),
+                        (AccountTable.ACCOUNT_TYPE == "Savings", 1),
+                        (AccountTable.ACCOUNT_TYPE == "Credit Card", 2),
+                        else_=3
+                    )
+                )
+                .all()
+            )
 
             # If accounts are found, return the account details
             if accounts:

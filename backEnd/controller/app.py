@@ -6,7 +6,7 @@ from flask_cors import CORS, cross_origin
 from src.auth_user import auth_user
 from src.token import Token
 from src.transactions import get_pending_transactions, update_transaction, create_transaction
-from src.accounts import get_user_accounts
+from src.accounts import get_user_accounts, update_account
 
 app = Flask(__name__)
 
@@ -90,9 +90,7 @@ def transactions():
             
             return Response(status=500)
         
-        elif request.method == "POST":
-            print(f"Creating transaction for user_id: {user_id}")
-            print(f"Request JSON: {request.get_json()}")
+        if request.method == "POST":
             create = create_transaction(request.get_json(), user_id)
 
             if create:
@@ -103,7 +101,7 @@ def transactions():
     else:
         return Response("Unauthorized", status=401, mimetype="text/plain")
     
-@app.route("/accounts", methods=["GET"])
+@app.route("/accounts", methods=["GET", "PUT"])
 def accounts():
     """
     """
@@ -119,6 +117,14 @@ def accounts():
                 return Response("No accounts found", status=404, mimetype="text/plain")
             
             return jsonify(user_accounts), 200
+        
+        if request.method == "PUT":
+            update = update_account(request.get_json())
+            
+            if update:
+                return Response(status=200)
+            
+            return Response(status=500)
 
     else:
         return Response("Unauthorized", status=401, mimetype="text/plain")

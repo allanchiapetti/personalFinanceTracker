@@ -36,7 +36,9 @@ export default function WelcomePage() {
                 <button className="px-6 py-3 bg-blue-500 text-white rounded-lg">Manage expenses</button>
               </Link>
 
-              <button className="px-6 py-3 bg-green-500 text-white rounded-lg">Button 2</button>
+              <Link href="/accounts/manage">
+                <button className="px-6 py-3 bg-green-500 text-white rounded-lg">Manage accounts</button>
+              </Link>
 
           </div>
           
