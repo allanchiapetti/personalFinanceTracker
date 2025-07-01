@@ -17,3 +17,16 @@ def update_account(update_json):
     update = requests.put(url=f"{MODEL_API_ENDPOINT}/user/account", json=update_json)
 
     return update.status_code == 200
+
+def delete_account(delete_json):
+    update = requests.delete(url=f"{MODEL_API_ENDPOINT}/user/account", json=delete_json)
+
+    return update.status_code == 200
+
+def create_account(create_json, user_id):
+    # Add the user_id to the create_json to ensure the account is linked to the correct user
+    create_json['user_id'] = user_id
+
+    create = requests.post(url=f"{MODEL_API_ENDPOINT}/user/account", json=create_json)
+
+    return create.status_code == 200

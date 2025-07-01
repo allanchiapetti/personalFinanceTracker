@@ -15,7 +15,7 @@ export default async function handler(req, res) {
     agent
   });
 
-  const status = await response.status;
+  const status = response.status;
 
   res.status(200).json({ success: true });
 }

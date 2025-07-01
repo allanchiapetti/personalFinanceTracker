@@ -6,7 +6,7 @@ export default async function handler(req, res) {
   const agent = new https.Agent({ rejectUnauthorized: false });
 
   const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/accounts`, {
-    method: 'PUT',
+    method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
       Cookie: cookie
