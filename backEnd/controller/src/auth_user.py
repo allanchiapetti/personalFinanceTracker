@@ -44,3 +44,41 @@ def auth_user(email, password):
         # If the validation is successful, return the user data
         else:
             return user_data
+        
+def create_user(email, password, first_name, last_name):
+    """
+    Create a new user with the provided email, password, first name, and last name.
+    
+    Args:
+        email (str): The user's email address.
+        password (str): The user's password.
+        first_name (str): The user's first name.
+        last_name (str): The user's last name.
+    
+    Returns:
+        dict: A dictionary containing the newly created user information if successful, otherwise None.
+    """
+    # Create a PasswordHash object to calculate the hash
+    hash_password = PasswordHash()
+    
+    # Create a salt for the password
+    password_salt = hash_password.create_salt()
+
+    # Hash the password with the salt
+    hashed_password = hash_password.hash_password(password, password_salt)
+
+
+    # Call the user data endpoint from Model to create a new user
+    user_data = requests.post(url=f"{MODEL_API_ENDPOINT}/user", 
+                              json={"email": email, 
+                                    "password_hash": hashed_password, 
+                                    "password_salt": password_salt,
+                                    "first_name": first_name, 
+                                    "last_name": last_name})
+
+    print(user_data.status_code, user_data.text)
+    # Check if the request was successful
+    if user_data.status_code != 201:
+        return False
+    
+    return True

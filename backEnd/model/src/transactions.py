@@ -221,3 +221,85 @@ class Transaction:
         # Close the session after the operation
         finally:
             self.__conn.close_session(session)
+    
+    def get_total_debit_by_month(self, user_id):
+        """
+        Get the total amount spent by month for a given user_id.
+        If the user has no transactions, return an empty list.
+        """
+        session = self.__conn.create_session()
+        
+        try:
+            month_expr = sa.sql.literal_column("FORMAT(TRANSACTIONS.TRANSACTION_DATE, 'yyyy-MM')").label('month')
+
+            total_by_month = (
+                session.query(
+                    month_expr,
+                    TransactionTable.CATEGORY,
+                    sa.func.sum(TransactionTable.AMOUNT).label("total")
+                )
+                .join(AccountTable, AccountTable.ACCOUNT_ID == TransactionTable.ACCOUNT_ID)
+                .join(UserTable, UserTable.USER_ID == AccountTable.USER_ID)
+                .filter(UserTable.USER_ID == user_id)
+                .filter(TransactionTable.TRANSACTION_TYPE == "Debit")
+                .group_by(month_expr, TransactionTable.CATEGORY)
+                .order_by(month_expr, TransactionTable.CATEGORY)
+                .all()
+            )
+           
+            # If totals are found, return the totals by month
+            if total_by_month:
+                return [{"month": month, "category": category, "total": round(total, 2)} for month, category, total in total_by_month], 200
+            
+            # If no totals are found, return an empty list
+            else:
+                return [], 200
+            
+        # If any exception occurs, return an error message 
+        except Exception as e:
+            return {"error": str(e)}, 500
+        
+        # Close the session after the operation
+        finally:
+            self.__conn.close_session(session)
+
+    def get_total_credit_by_month(self, user_id):
+        """
+        Get the total amount spent by month for a given user_id.
+        If the user has no transactions, return an empty list.
+        """
+        session = self.__conn.create_session()
+        
+        try:
+            month_expr = sa.sql.literal_column("FORMAT(TRANSACTIONS.TRANSACTION_DATE, 'yyyy-MM')").label('month')
+
+            total_by_month = (
+                session.query(
+                    month_expr,
+                    TransactionTable.CATEGORY,
+                    sa.func.sum(TransactionTable.AMOUNT).label("total")
+                )
+                .join(AccountTable, AccountTable.ACCOUNT_ID == TransactionTable.ACCOUNT_ID)
+                .join(UserTable, UserTable.USER_ID == AccountTable.USER_ID)
+                .filter(UserTable.USER_ID == user_id)
+                .filter(TransactionTable.TRANSACTION_TYPE == "Credit")
+                .group_by(month_expr, TransactionTable.CATEGORY)
+                .order_by(month_expr, TransactionTable.CATEGORY)
+                .all()
+            )
+           
+            # If totals are found, return the totals by month
+            if total_by_month:
+                return [{"month": month, "category": category, "total": round(total, 2)} for month, category, total in total_by_month], 200
+            
+            # If no totals are found, return an empty list
+            else:
+                return [], 200
+            
+        # If any exception occurs, return an error message 
+        except Exception as e:
+            return {"error": str(e)}, 500
+        
+        # Close the session after the operation
+        finally:
+            self.__conn.close_session(session)

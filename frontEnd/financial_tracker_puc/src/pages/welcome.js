@@ -30,14 +30,18 @@ export default function WelcomePage() {
       
        
       <div className="flex items-center justify-center h-screen">
-          <div className="grid grid-cols-2 gap-6">
+          <div className="grid grid-cols-3 gap-6">
               
               <Link href="/expenses/manage">
-                <button className="px-6 py-3 bg-blue-500 text-white rounded-lg">Manage expenses</button>
+                <button className="px-6 py-3 bg-blue-500 text-white rounded-lg">Manage transactions</button>
               </Link>
 
               <Link href="/accounts/manage">
                 <button className="px-6 py-3 bg-green-500 text-white rounded-lg">Manage accounts</button>
+              </Link>
+
+              <Link href="/expenses/statistics">
+                <button className="px-6 py-3 bg-purple-500 text-white rounded-lg">Statistics</button>
               </Link>
 
           </div>

@@ -3,9 +3,9 @@ from flask import Flask, Response, request, make_response, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity, create_access_token, JWTManager, set_access_cookies
 from flask_cors import CORS, cross_origin
 
-from src.auth_user import auth_user
+from src.auth_user import auth_user, create_user
 from src.token import Token
-from src.transactions import get_pending_transactions, update_transaction, create_transaction
+from src.transactions import get_pending_transactions, update_transaction, create_transaction, get_spending_by_month, get_credits_by_month
 from src.accounts import get_user_accounts, update_account, delete_account, create_account
 
 app = Flask(__name__)
@@ -56,6 +56,30 @@ def auth():
         response.set_cookie("jwt", access_token, httponly=False, secure=True, samesite="None", path="/")
 
     return response
+
+@app.route("/user", methods=["POST"])
+def user():
+    """
+    Endpoint to create a new user.
+    """
+    data = request.get_json()
+    if not data or "email" not in data or "password" not in data or "first_name" not in data or "last_name" not in data:
+        return make_response(jsonify({"error": "Invalid input"}), 400)
+
+    email = data["email"]
+    password = data["password"]
+    first_name = data["first_name"]
+    last_name = data["last_name"]
+
+    user_data = create_user(email=email, password=password, first_name=first_name, last_name=last_name)
+
+    if not user_data:
+        return make_response(jsonify({"error": "User creation failed"}), 500)
+
+    response = make_response(jsonify(user_data), 201)
+
+    return response
+
 
 #@cross_origin(supports_credentials=True, origins=["https://localhost" , "http://10.5.0.2:3000"])
 @app.route("/transactions/pending", methods=["GET"])
@@ -144,3 +168,33 @@ def accounts():
 
     else:
         return Response("Unauthorized", status=401, mimetype="text/plain")
+    
+@app.route("/accounts/debit_stats", methods=["GET"])
+def debit_status():
+    """
+    """
+    token = request.cookies.get("jwt")
+
+    user_id = Token().validate_token(token)
+    if user_id:
+        spending_by_month = get_spending_by_month(user_id)
+
+        if spending_by_month is None:
+            return Response("No transactions found", status=404, mimetype="text/plain")
+
+        return jsonify(spending_by_month), 200
+    
+@app.route("/accounts/credit_stats", methods=["GET"])
+def credit_stats():
+    """
+    """
+    token = request.cookies.get("jwt")
+
+    user_id = Token().validate_token(token)
+    if user_id:
+        credits_by_month = get_credits_by_month(user_id)
+
+        if credits_by_month is None:
+            return Response("No transactions found", status=404, mimetype="text/plain")
+
+        return jsonify(credits_by_month), 200

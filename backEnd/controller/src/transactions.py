@@ -13,6 +13,26 @@ def get_pending_transactions(user_id):
     else:
         return pending_transactions.json()
 
+def get_spending_by_month(user_id):
+    # Call the user data endpoint from Model to retrieve the user transactions over time
+    transactions = requests.get(url=f"{MODEL_API_ENDPOINT}/user/transaction/debit_stats", json={"user_id": user_id})
+    
+    # Check if the request was successful
+    if transactions.status_code != 200:
+        return None
+    
+    return transactions.json()
+
+def get_credits_by_month(user_id):
+    # Call the user data endpoint from Model to retrieve the user transactions over time
+    transactions = requests.get(url=f"{MODEL_API_ENDPOINT}/user/transaction/credit_stats", json={"user_id": user_id})
+    
+    # Check if the request was successful
+    if transactions.status_code != 200:
+        return None
+    
+    return transactions.json()
+
 def update_transaction(update_json):
     update = requests.put(url=f"{MODEL_API_ENDPOINT}/user/account/transaction", json=update_json)
 

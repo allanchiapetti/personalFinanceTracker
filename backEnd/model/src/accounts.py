@@ -54,7 +54,7 @@ class Account:
                          "institution": account.INSTITUTION,
                          "account_name": account.ACCOUNT_NAME,
                          "account_type": account.ACCOUNT_TYPE,
-                         "balance": str(account.BALANCE)} for account in accounts], 200
+                         "balance": str(account.BALANCE) if account.BALANCE is not None else "0"} for account in accounts], 200
             
             # If no accounts are found, return an empty list
             else:

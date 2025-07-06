@@ -292,6 +292,55 @@ def user_transaction_unpaid():
     response.headers["Content-Type"] = "application/json"
     return response
 
+@app.route("/user/transaction/debit_stats", methods=["GET"])
+def user_transaction_debit_stats():
+    """
+    Get all transactions for a given user_id over time.
+    If the user has no transactions, return an empty list.
+    """
+    # Get JSON data from the request
+    data = request.get_json()
+
+    if not data or "user_id" not in data:
+        response = make_response({"error": "Missing required fields"}, 400)
+        response.headers["Content-Type"] = "application/json"
+        return response
+
+    user_id = data.get("user_id")
+    
+    # Call the method to get user transactions over time
+    stats_response, status_code = transaction_obj.get_total_debit_by_month(user_id)
+
+    # Return the response
+    response = make_response(jsonify(stats_response), status_code)
+    response.headers["Content-Type"] = "application/json"
+    return response
+
+@app.route("/user/transaction/credit_stats", methods=["GET"])
+def user_transaction_credit_stats():
+    """
+    Get all transactions for a given user_id over time.
+    If the user has no transactions, return an empty list.
+    """
+    # Get JSON data from the request
+    data = request.get_json()
+
+    if not data or "user_id" not in data:
+        response = make_response({"error": "Missing required fields"}, 400)
+        response.headers["Content-Type"] = "application/json"
+        return response
+
+    user_id = data.get("user_id")
+    
+    # Call the method to get user transactions over time
+    stats_response, status_code = transaction_obj.get_total_credit_by_month(user_id)
+
+    # Return the response
+    response = make_response(jsonify(stats_response), status_code)
+    response.headers["Content-Type"] = "application/json"
+    return response
+
+
 @app.route("/user/account/transaction", methods=["GET", "POST", "PUT", "DELETE"])
 def user_account_transaction():
     if request.method == "GET":

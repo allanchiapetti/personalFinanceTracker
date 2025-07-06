@@ -41,6 +41,12 @@ export default function AddTransactionForm({ onClose, refreshData }) {
   };
 
 
+  useEffect(() => {
+    if (form.account_type === "Credit Card") {
+      setForm((prev) => ({ ...prev, balance: "" }));
+    }
+  }, [form.account_type]);
+
   return (
     <div className="w-80 bg-white border border-gray-300 shadow-md p-4 rounded-md text-black">
       <h3 className="text-lg font-semibold mb-4">Add Transaction</h3>
@@ -81,11 +87,12 @@ export default function AddTransactionForm({ onClose, refreshData }) {
           onChange={handleChange}
           onBlur={handleBlur}
           placeholder="Balance"
-          min="0.01"
+          min="0.00"
           type="number"
           step="0.01"
           required
-          className="border px-3 py-1 rounded"
+          disabled={form.account_type === "Credit Card"}
+          className="border px-3 py-1 rounded bg-white disabled:bg-gray-100"
         />
 
         <button type="submit" className="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-700">
