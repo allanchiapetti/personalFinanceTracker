@@ -3,7 +3,9 @@
 
 - Python 3.10+
 - Flask
+- Gunicorn
 - JWT (PyJWT)
+- Docker
 - Postman (para testes)
 
 ## Arquivos e Funcionalidades
@@ -40,7 +42,6 @@ Gerencia a leitura, criação e atualização de transações vinculadas ao usu�
     "email": "usuario@example.com",
     "password": "senha123"
   }
-
 - `POST /user`  
   Cria um usuário e retorna os dados do usuário criado.
 
@@ -52,11 +53,9 @@ Gerencia a leitura, criação e atualização de transações vinculadas ao usu�
     "first_name": "Usuário",
     "last_name": "Test"
   }
-
 - `GET /transactions/pending`  
   <b>Obtém o user_id a partir do token JWT</b>
   <br>Retorna as transações pendentes (com saldo diferente de 0) do usuário
-
 - `POST /transactions`  
   Cria uma nova transação associada a uma conta de um usuário
 
@@ -70,7 +69,6 @@ Gerencia a leitura, criação e atualização de transações vinculadas ao usu�
     "transaction_date": "2025-06-19T20:30:22",
     "description": "Test 2"
   }
-
 - `PUT /transactions`  
   Altera dados de uma transação.
   
@@ -87,11 +85,9 @@ Gerencia a leitura, criação e atualização de transações vinculadas ao usu�
   }
   transaction_id é obrigatório. 
   Os demais campos serão atualizados se passados na chamada, caso contrário será mantido o valor salvo.
-
 - `GET /accounts`  
   <b>Obtém o user_id a partir do token JWT</b>
   <br>Retorna todas as contas do usuário
-
 - `POST /accounts`  
   Cria uma nova conta associada a uma conta de um usuário
 
@@ -104,7 +100,6 @@ Gerencia a leitura, criação e atualização de transações vinculadas ao usu�
     "account_type": "Corrent", 
     "balance": "150.50"
   }
-
 - `PUT /accounts`  
   Altera dados de uma conta.
   
@@ -119,7 +114,6 @@ Gerencia a leitura, criação e atualização de transações vinculadas ao usu�
   }
   account_id é obrigatório. 
   Os demais campos serão atualizados se passados na chamada, caso contrário será mantido o valor salvo.
-
 - `DELETE /accounts`  
   Deleta uma conta.
   
@@ -128,11 +122,9 @@ Gerencia a leitura, criação e atualização de transações vinculadas ao usu�
   {
     "account_id": "1"
   }
-
 - `GET /accounts/debit_stats`  
   <b>Obtém o user_id a partir do token JWT</b>
-  <br>Retorna todas as transações do usuário classificadas como débito
-
+  <br>Retorna um agregado por mês, do valor de todas as transações do usuário classificadas como débito
 - `GET /accounts/credit_stats`  
   <b>Obtém o user_id a partir do token JWT</b>
-  <br>Retorna todas as transações do usuário classificadas como crédito
+  <br>Retorna um agregado por mês, do valor de todas as transações do usuário classificadas como crédito

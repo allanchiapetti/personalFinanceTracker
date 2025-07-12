@@ -1,3 +1,14 @@
+# This Dockerfile sets up a Python 3.13 environment on Debian Bookworm slim.
+# It installs essential build tools and system dependencies required for building Python packages.
+# The Microsoft ODBC Driver for SQL Server (msodbcsql18) is installed to enable database connectivity.
+# Python dependencies are installed from requirements.txt.
+# The application source code is copied into the container.
+# The container exposes port 5000 and uses Gunicorn to serve the app defined in main:app.
+# When running this Dockerfile, a .env file must be passed to set the following environment variables:
+    #SERVER
+    #NAME
+    #USERNAME
+    #PASSWORD
 FROM python:3.13-slim-bookworm
 
 WORKDIR /
