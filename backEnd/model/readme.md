@@ -171,7 +171,7 @@ Contém as funções de leitura + CRUD para dados de contas
     "category": "Energia",
     "amount": "250",
     "transaction_type": "Debit",
-    "transaction_date": "2024-12-15T10:18:55",
+    "transaction_date": "2024-12-15",
     "description": "Test transação"
   }
 - `PUT /user/account/transaction`  
@@ -184,7 +184,7 @@ Contém as funções de leitura + CRUD para dados de contas
     "category": "Energia",
     "amount": "250",
     "transaction_type": "Debit",
-    "transaction_date": "2024-12-15T10:18:55",
+    "transaction_date": "2024-12-15",
     "description": "Test transação",
     "balance": "150"
   }

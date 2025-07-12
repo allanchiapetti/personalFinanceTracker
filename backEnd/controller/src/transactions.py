@@ -86,4 +86,4 @@ def create_transaction(create_json, user_id):
     # Call the user data endpoint from Model to create a new transaction
     create = requests.post(url=f"{MODEL_API_ENDPOINT}/user/account/transaction", json=create_json)
 
-    return create.status_code == 200
+    return create.status_code == 201

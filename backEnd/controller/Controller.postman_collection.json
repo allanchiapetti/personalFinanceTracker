@@ -1,0 +1,311 @@
+{
+	"info": {
+		"_postman_id": "e1c62c47-d280-4fbd-ae26-e7eb84903650",
+		"name": "Controller",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18085907"
+	},
+	"item": [
+		{
+			"name": "auth",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"email\": \"allan.chiapetti@gmail.com\",\r\n  \"password\": \"test123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL_CONTROLLER}}/auth",
+					"host": [
+						"{{URL_CONTROLLER}}"
+					],
+					"path": [
+						"auth"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "transactions/pending",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"email\": \"allan.chiapetti@gmail.com\",\r\n  \"password\": \"test123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL_CONTROLLER}}/transactions/pending",
+					"host": [
+						"{{URL_CONTROLLER}}"
+					],
+					"path": [
+						"transactions",
+						"pending"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "accounts/debit_stats",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"email\": \"allan.chiapetti@gmail.com\",\r\n  \"password\": \"test123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL_CONTROLLER}}/accounts/debit_stats",
+					"host": [
+						"{{URL_CONTROLLER}}"
+					],
+					"path": [
+						"accounts",
+						"debit_stats"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "accounts/credit_stats",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"email\": \"allan.chiapetti@gmail.com\",\r\n  \"password\": \"test123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL_CONTROLLER}}/accounts/credit_stats",
+					"host": [
+						"{{URL_CONTROLLER}}"
+					],
+					"path": [
+						"accounts",
+						"credit_stats"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "accounts",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL_CONTROLLER}}/accounts",
+					"host": [
+						"{{URL_CONTROLLER}}"
+					],
+					"path": [
+						"accounts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "accounts",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"user_id\": \"1\", \r\n  \"institution\": \"Test\", \r\n  \"account_name\": \"Conta\", \r\n  \"account_type\": \"Corrent\", \r\n  \"balance\": \"150.50\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL_CONTROLLER}}/accounts",
+					"host": [
+						"{{URL_CONTROLLER}}"
+					],
+					"path": [
+						"accounts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "accounts",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"account_id\": \"38\",\r\n  \"institution\": \"Extra\",\r\n  \"account_name\": \"300\",\r\n  \"account_type\": \"Debit\",\r\n  \"balance\": \"280\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL_CONTROLLER}}/accounts",
+					"host": [
+						"{{URL_CONTROLLER}}"
+					],
+					"path": [
+						"accounts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "accounts",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"account_id\": \"50\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL_CONTROLLER}}/accounts",
+					"host": [
+						"{{URL_CONTROLLER}}"
+					],
+					"path": [
+						"accounts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"email\": \"usuario2@example.com\",\r\n  \"password\": \"senha123\",\r\n  \"first_name\": \"Usuário\",\r\n  \"last_name\": \"Test\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL_CONTROLLER}}/user",
+					"host": [
+						"{{URL_CONTROLLER}}"
+					],
+					"path": [
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "transactions",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"account_id\": \"39\",\r\n  \"category\": \"Extra\",\r\n  \"amount\": \"300\",\r\n  \"transaction_type\": \"Debit\",\r\n  \"transaction_date\": \"2025-06-19\",\r\n  \"description\": \"Test 2\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL_CONTROLLER}}/transactions",
+					"host": [
+						"{{URL_CONTROLLER}}"
+					],
+					"path": [
+						"transactions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "transactions",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"transaction_id\": \"1500\",\r\n  \"category\": \"Extra\",\r\n  \"amount\": \"300\",\r\n  \"transaction_type\": \"Debit\",\r\n  \"transaction_date\": \"2025-06-19T20:30:22\",\r\n  \"description\": \"Test 2\",\r\n  \"balance\": \"280\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL_CONTROLLER}}/transactions",
+					"host": [
+						"{{URL_CONTROLLER}}"
+					],
+					"path": [
+						"transactions"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

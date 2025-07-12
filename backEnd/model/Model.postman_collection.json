@@ -1,0 +1,484 @@
+{
+	"info": {
+		"_postman_id": "f112a0e3-0f95-4dc9-9ca6-5c3a3136eae6",
+		"name": "Model",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18085907"
+	},
+	"item": [
+		{
+			"name": "user",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"user_id\": \"7\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL_MODEL}}/user",
+					"host": [
+						"{{URL_MODEL}}"
+					],
+					"path": [
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user/account/transaction",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"account_id\": \"38\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL_MODEL}}/user/account/transaction",
+					"host": [
+						"{{URL_MODEL}}"
+					],
+					"path": [
+						"user",
+						"account",
+						"transaction"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user/account/transaction",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"account_id\": \"38\",\r\n  \"category\": \"Energia\",\r\n  \"amount\": \"250\",\r\n  \"transaction_type\": \"Debit\",\r\n  \"transaction_date\": \"2024-12-15\",\r\n  \"description\": \"Test transação\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL_MODEL}}/user/account/transaction",
+					"host": [
+						"{{URL_MODEL}}"
+					],
+					"path": [
+						"user",
+						"account",
+						"transaction"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user/account/transaction",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"transaction_id\": \"1900\",\r\n  \"category\": \"Energia\",\r\n  \"amount\": \"250\",\r\n  \"transaction_type\": \"Debit\",\r\n  \"transaction_date\": \"2024-12-15T10:18:55\",\r\n  \"description\": \"Test transação\",\r\n  \"balance\": \"150\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL_MODEL}}/user/account/transaction",
+					"host": [
+						"{{URL_MODEL}}"
+					],
+					"path": [
+						"user",
+						"account",
+						"transaction"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user/account/transaction",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"transaction_id\": \"1900\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL_MODEL}}/user/account/transaction",
+					"host": [
+						"{{URL_MODEL}}"
+					],
+					"path": [
+						"user",
+						"account",
+						"transaction"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user/transaction",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"user_id\": \"1\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL_MODEL}}/user/transaction",
+					"host": [
+						"{{URL_MODEL}}"
+					],
+					"path": [
+						"user",
+						"transaction"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user/transaction/unpaid",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"user_id\": \"1\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL_MODEL}}/user/transaction/unpaid",
+					"host": [
+						"{{URL_MODEL}}"
+					],
+					"path": [
+						"user",
+						"transaction",
+						"unpaid"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/user/transaction/credit_stats",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"user_id\": \"1\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL_MODEL}}/user/transaction/credit_stats",
+					"host": [
+						"{{URL_MODEL}}"
+					],
+					"path": [
+						"user",
+						"transaction",
+						"credit_stats"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/user/transaction/debit_stats",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"user_id\": \"1\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL_MODEL}}/user/transaction/debit_stats",
+					"host": [
+						"{{URL_MODEL}}"
+					],
+					"path": [
+						"user",
+						"transaction",
+						"debit_stats"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user/account",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"user_id\": \"1\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL_MODEL}}/user/account",
+					"host": [
+						"{{URL_MODEL}}"
+					],
+					"path": [
+						"user",
+						"account"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user/account",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"user_id\": \"1\", \r\n  \"institution\": \"Banco\", \r\n  \"account_name\": \"Conta\", \r\n  \"account_type\": \"Savings\", \r\n  \"balance\": \"5000\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL_MODEL}}/user/account",
+					"host": [
+						"{{URL_MODEL}}"
+					],
+					"path": [
+						"user",
+						"account"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user/account",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"account_id\": \"48\",\r\n  \"institution\": \"Extra\",\r\n  \"account_name\": \"300\",\r\n  \"account_type\": \"Debit\",\r\n  \"balance\": \"280\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL_MODEL}}/user/account",
+					"host": [
+						"{{URL_MODEL}}"
+					],
+					"path": [
+						"user",
+						"account"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user/account Copy",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"account_id\": \"10\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL_MODEL}}/user/account",
+					"host": [
+						"{{URL_MODEL}}"
+					],
+					"path": [
+						"user",
+						"account"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"email\": \"usuario@example.com\",\r\n  \"first_name\": \"Usuário\",\r\n  \"last_name\": \"de Test\",\r\n  \"password_hash\": \"454f7c552baf1daa7c111e0492cb3474e7b2071b2f671a18c845b853ebd8f94b\",\r\n  \"password_salt\": \"d2bb51cc14c459d9c4e003117d622687a1f321bf255c87844a437522d0c522d0\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL_MODEL}}/user",
+					"host": [
+						"{{URL_MODEL}}"
+					],
+					"path": [
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user/validate_password",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"user_id\": \"1\",\r\n  \"password_hash\": \"c3cf55af505414e28864f7ba9060789bc3df05f77bfc5dee38ed2bbf9fa7993d\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL_MODEL}}/user/validate_password",
+					"host": [
+						"{{URL_MODEL}}"
+					],
+					"path": [
+						"user",
+						"validate_password"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"user_id\": \"7\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"user_id\": \"7\",\r\n  \"email\": \"usuario@example.com\",\r\n  \"first_name\": \"Usuário\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL_MODEL}}/user",
+					"host": [
+						"{{URL_MODEL}}"
+					],
+					"path": [
+						"user"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

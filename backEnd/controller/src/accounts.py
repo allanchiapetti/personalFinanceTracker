@@ -59,4 +59,4 @@ def create_account(create_json, user_id) -> bool:
 
     create = requests.post(url=f"{MODEL_API_ENDPOINT}/user/account", json=create_json)
 
-    return create.status_code == 200
+    return create.status_code == 201

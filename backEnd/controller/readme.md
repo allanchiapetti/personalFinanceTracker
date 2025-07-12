@@ -1,7 +1,7 @@
 # Camada de controle – `backEnd/controller/`
 ## Requisitos
 
-- Python 3.10+
+- Python 3.13+
 - Flask
 - Gunicorn
 - JWT (PyJWT)
@@ -66,7 +66,7 @@ Gerencia a leitura, criação e atualização de transações vinculadas ao usu�
     "category": "Extra",
     "amount": "300",
     "transaction_type": "Debit",
-    "transaction_date": "2025-06-19T20:30:22",
+    "transaction_date": "2025-06-19",
     "description": "Test 2"
   }
 - `PUT /transactions`  
@@ -79,7 +79,7 @@ Gerencia a leitura, criação e atualização de transações vinculadas ao usu�
     "category": "Extra",
     "amount": "300",
     "transaction_type": "Debit",
-    "transaction_date": "2025-06-19T20:30:22",
+    "transaction_date": "2025-06-19",
     "description": "Test 2",
     "balance": "280"
   }
