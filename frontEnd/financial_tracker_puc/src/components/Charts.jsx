@@ -38,7 +38,6 @@ export default function SpendingOverTimeChart() {
         setDebitData(JSON.parse(debitText));
         setCreditData(JSON.parse(creditText));
       } catch (err) {
-        console.error("❌ Error fetching data:", err);
         setError("Failed to load data");
       }
     };

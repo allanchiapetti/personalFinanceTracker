@@ -47,17 +47,16 @@ def auth_user(email, password):
         
 def create_user(email, password, first_name, last_name):
     """
-    Create a new user with the provided email, password, first name, and last name.
-    
+    Creates a new user by hashing the provided password with a generated salt and sending the user data to the model API.
     Args:
         email (str): The user's email address.
-        password (str): The user's password.
+        password (str): The user's plaintext password.
         first_name (str): The user's first name.
         last_name (str): The user's last name.
-    
     Returns:
-        dict: A dictionary containing the newly created user information if successful, otherwise None.
+        bool: True if the user was successfully created (HTTP 201), False otherwise.
     """
+
     # Create a PasswordHash object to calculate the hash
     hash_password = PasswordHash()
     
@@ -75,10 +74,5 @@ def create_user(email, password, first_name, last_name):
                                     "password_salt": password_salt,
                                     "first_name": first_name, 
                                     "last_name": last_name})
-
-    print(user_data.status_code, user_data.text)
-    # Check if the request was successful
-    if user_data.status_code != 201:
-        return False
-    
-    return True
+  
+    return user_data.status_code == 201

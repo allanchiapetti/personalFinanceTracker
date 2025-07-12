@@ -1,3 +1,16 @@
+# This Dockerfile sets up a Python 3.13 application environment using the slim Bookworm image.
+# It performs the following steps:
+# 1. Sets the working directory to the root (/).
+# 2. Upgrades pip to the latest version.
+# 3. Copies the requirements.txt file and installs Python dependencies.
+# 4. Copies the entire application source code into the container.
+# 5. Exposes port 444 for incoming connections.
+# 6. Sets the default command to run the application using Gunicorn with HTTPS enabled,
+#    binding to all interfaces on port 444 and using specified certificate and key files.
+
+# When running this Dockerfile, a .env file must be passed to set the following environment variables:
+    # MODEL_API_ENDPOINT
+    # JWT_SECRET_KEY 
 FROM python:3.13-slim-bookworm
 
 WORKDIR /

@@ -1,6 +1,6 @@
 import os
 from flask import Flask, Response, request, make_response, jsonify
-from flask_jwt_extended import jwt_required, get_jwt_identity, create_access_token, JWTManager, set_access_cookies
+#from flask_jwt_extended import jwt_required, get_jwt_identity, create_access_token, JWTManager, set_access_cookies
 from flask_cors import CORS, cross_origin
 
 from src.auth_user import auth_user, create_user
@@ -10,30 +10,33 @@ from src.accounts import get_user_accounts, update_account, delete_account, crea
 
 app = Flask(__name__)
 
-jwt = JWTManager(app)
+#jwt = JWTManager(app)
 
-app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY")
-app.config["JWT_TOKEN_LOCATION"] = ["cookies"]
-#app.config["JWT_COOKIE_SECURE"] = True
-#app.config["JWT_COOKIE_SAMESITE"] = "None"
-#app.config["JWT_COOKIE_CSRF_PROTECT"] = True
-#app.config["JWT_ACCESS_COOKIE_PATH"] = "/api/"
-#app.config["JWT_REFRESH_COOKIE_PATH"] = "/token/refresh"
+#app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY")
+#app.config["JWT_TOKEN_LOCATION"] = ["cookies"]
 
-jwt = JWTManager(app)
+#jwt = JWTManager(app)
 
-CORS(app, supports_credentials=True, origins=["https://localhost", "http://10.5.0.2:3000"])
+CORS(app, supports_credentials=True, origins=["https://localhost", "http://10.5.0.2:3000"]) # MUST BE ADJUSTED FOR PRODUCTION
 
 @app.after_request
 def add_cors_headers(response):
     response.headers['Access-Control-Allow-Credentials'] = 'true'
-    response.headers['Access-Control-Allow-Origin'] = 'https://localhost'  # Adjust as needed
+    response.headers['Access-Control-Allow-Origin'] = 'https://localhost'  # MUST BE ADJUSTED FOR PRODUCTION
     return response
 
 
 # User authentication endpoint
 @app.route("/auth", methods=["POST"])
 def auth():
+    """
+    Authenticates a user based on provided email and password.
+    Expects a JSON payload with "email" and "password" fields in the request body.
+    If authentication is successful, returns user data and sets a JWT token as a cookie.
+    If authentication fails or input is invalid, returns an appropriate error response.
+    Returns:
+        Response: A Flask response object containing either user data (on success) or an error message (on failure).
+    """
     data = request.get_json()
     if not data or "email" not in data or "password" not in data:
         return make_response(jsonify({"error": "Invalid input"}), 400)
@@ -60,7 +63,12 @@ def auth():
 @app.route("/user", methods=["POST"])
 def user():
     """
-    Endpoint to create a new user.
+    Handles user creation by processing JSON input containing 'email', 'password', 'first_name', and 'last_name'.
+    Validates input data, creates a new user, and returns the created user data as a JSON response with status 201.
+    Returns an error response with appropriate status code if input is invalid or user creation fails.
+    Returns:
+        Response: JSON response containing user data and HTTP status 201 on success,
+                  or error message with status 400 or 500 on failure.
     """
     data = request.get_json()
     if not data or "email" not in data or "password" not in data or "first_name" not in data or "last_name" not in data:
@@ -81,10 +89,16 @@ def user():
     return response
 
 
-#@cross_origin(supports_credentials=True, origins=["https://localhost" , "http://10.5.0.2:3000"])
 @app.route("/transactions/pending", methods=["GET"])
 def transactions_pending():
     """
+    Handles the retrieval of pending transactions for the authenticated user.
+    Authentication:
+        - Requires a valid JWT token in the request cookies.
+        - Returns 401 Unauthorized if the token is missing or invalid.
+    Returns:
+        flask.Response: A JSON response with the list of pending transactions and a 200 status code if authenticated,
+                        otherwise a plain text response with a 401 status code.
     """
     token = request.cookies.get("jwt")
 
@@ -100,6 +114,18 @@ def transactions_pending():
 @app.route("/transactions", methods=["PUT", "POST"])
 def transactions():
     """
+    Handles HTTP requests for creating and updating user transactions.
+    This function processes PUT and POST requests:
+        - PUT: Updates an existing transaction with data from the request JSON body.
+        - POST: Creates a new transaction with data from the request JSON body and the authenticated user ID.
+    Authentication:
+        - Requires a valid JWT token in the request cookies.
+        - Returns 401 Unauthorized if the token is missing or invalid.
+    Returns:
+        Response: 
+            - 200 OK on successful creation or update.
+            - 500 Internal Server Error on failure to create or update.
+            - 401 Unauthorized if authentication fails.
     """
     token = request.cookies.get("jwt")
 
@@ -128,6 +154,20 @@ def transactions():
 @app.route("/accounts", methods=["GET", "PUT", "DELETE", "POST"])
 def accounts():
     """
+    Handles account-related HTTP requests for the authenticated user.
+    This function supports the following HTTP methods:
+        - GET:    Retrieves all accounts associated with the authenticated user.
+        - POST:   Creates a new account for the authenticated user using provided JSON data.
+        - PUT:    Updates an existing account with provided JSON data.
+        - DELETE: Deletes an account specified in the provided JSON data.
+    Authentication:
+        - Requires a valid JWT token in the request cookies.
+        - Returns 401 Unauthorized if the token is missing or invalid.
+    Returns:
+        - 200 OK: On successful retrieval, creation, update, or deletion of accounts.
+        - 404 Not Found: If no accounts are found for the user (GET).
+        - 401 Unauthorized: If the JWT token is missing or invalid.
+        - 500 Internal Server Error: If an error occurs during account creation, update, or deletion.
     """
     token = request.cookies.get("jwt")
 
@@ -172,7 +212,18 @@ def accounts():
 @app.route("/accounts/debit_stats", methods=["GET"])
 def debit_status():
     """
+    Handles the retrieval of a user's monthly spending status.
+    Authentication:
+    - Requires a valid JWT token in the request cookies.
+    - Returns 401 Unauthorized if the token is missing or invalid.
+    Authentication:
+        - Requires a valid JWT token in the request cookies.
+        - Returns 401 Unauthorized if the token is missing or invalid..
+    Returns:
+        Response: A JSON response containing the spending data by month with a 200 status code,
+                  or a plain text response with a 404 status code if no transactions are found.
     """
+
     token = request.cookies.get("jwt")
 
     user_id = Token().validate_token(token)
@@ -187,6 +238,13 @@ def debit_status():
 @app.route("/accounts/credit_stats", methods=["GET"])
 def credit_stats():
     """
+    Handles the retrieval of credit statistics for the authenticated user.
+    Authentication:
+        - Requires a valid JWT token in the request cookies.
+        - Returns 401 Unauthorized if the token is missing or invalid.
+    Returns:
+        Response: A JSON response containing the credits by month and a 200 status code if successful,
+                  or a plain text response with a 404 status code if no transactions are found.
     """
     token = request.cookies.get("jwt")
 

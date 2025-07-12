@@ -19,13 +19,11 @@ export default function AddTransactionForm({ onClose, refreshData }) {
 
   useEffect(() => {
     const fetchAccounts = async () => {
-      try {
-        const res = await fetch("/api/user_accounts", { credentials: "include" }); // or axios if you're using that
-        const data = await res.json();
-        setAccounts(data);
-      } catch (err) {
-        console.error("Failed to fetch accounts:", err);
-      }
+
+      const res = await fetch("/api/user_accounts", { credentials: "include" });
+      const data = await res.json();
+      setAccounts(data);
+      
     };
 
     fetchAccounts();
