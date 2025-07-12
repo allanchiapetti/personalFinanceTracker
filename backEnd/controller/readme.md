@@ -6,14 +6,6 @@
 - JWT (PyJWT)
 - Postman (para testes)
 
-<h1>Requisitos</h1>
-    <ul>
-        <li>Python 3.13+</li>
-        <li>Flask</li>
-        <li>JWT (PyJWT)</li>
-        <li>Postman (para testes)</li>
-    </ul>
-
 ## Arquivos e Funcionalidades
 
 ### `auth_user_.py`
