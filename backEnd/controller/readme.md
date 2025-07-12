@@ -105,7 +105,7 @@ Gerencia a leitura, criação e atualização de transações vinculadas ao usu�
     "balance": "150.50"
   }
 
-- `PUT /accounts`
+- `PUT /accounts`  
   Altera dados de uma conta.
   
   **Exemplo**:
@@ -120,7 +120,7 @@ Gerencia a leitura, criação e atualização de transações vinculadas ao usu�
   account_id é obrigatório. 
   Os demais campos serão atualizados se passados na chamada, caso contrário será mantido o valor salvo.
 
-- `DELETE /accounts`
+- `DELETE /accounts`  
   Deleta uma conta.
   
   **Exemplo**:
