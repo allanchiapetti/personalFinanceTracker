@@ -11,7 +11,7 @@ A aplicação foi construída utilizando o framework **Next.js**
 - **TaiwWind**
 - **Axios**
 
-## ⚙️ Estrutura de Diretórios
+## Estrutura de Diretórios
 ```
 financial_tracker_puc/ 
     ├── public/              
