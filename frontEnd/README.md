@@ -8,7 +8,7 @@ A aplicação foi construída utilizando o framework **Next.js**
 - **Next.js**
 - **React**
 - **JavaScript / JSX**
-- **TaiwWind**
+- **Tailwind CSS**
 - **Axios**
 
 ## Estrutura de Diretórios
